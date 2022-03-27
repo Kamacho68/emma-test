@@ -16,7 +16,7 @@ window.onload = function() {
 
                     // Fetch the constituency data related to the return parliamentary_constituency
                     var parliamentary_constituency = response.result.parliamentary_constituency;
-                    console.log('parliamentary_constituency', parliamentary_constituency);
+                    console.log('parliamentary_constituency to search', parliamentary_constituency);
 
                     if (!!parliamentary_constituency) {
 
@@ -24,9 +24,11 @@ window.onload = function() {
                             .then(response => response.json())
                             .then(data => {
                                 // Search for the constituency based on the postcode
+                                var constituencyFound = false;
                                 for (var i = 0; i < data.length; i++) {
-                                    console.log(data[i].parliamentary_constituency);
+                                    // console.log(data[i].parliamentary_constituency);
                                     if (data[i].parliamentary_constituency === parliamentary_constituency) {
+                                        console.log('Constituency found', data[i].parliamentary_constituency);
                                         console.log('found it', data[i]);
                                         var constituency = data[i].parliamentary_constituency;
                                         var mp_email = data[i].mp_email;
@@ -41,6 +43,12 @@ window.onload = function() {
                                         document.querySelector('main[class="my-5"]').style.display = 'block';
                                         return;
                                     }
+                                }
+                                if (!constituencyFound) {
+                                    document.querySelector('main[class="my-5"] h4[class="mb-5"]').textContent = 'No constituency';
+                                    document.querySelector('main[class="my-5"]').style.display = 'block';
+                                    document.querySelector('main[class="my-5"] div[class="card-body"]').style.display = 'none';
+                                    console.log('No constituency');
                                 }
                             });
                     }
